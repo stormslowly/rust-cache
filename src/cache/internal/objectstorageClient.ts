@@ -2,13 +2,13 @@
 // 6c4e082c181a51609197e536ef5255a0c9baeef7
 
 import * as core from "@actions/core";
-import { TosClient, TosClientError, TosServerError } from "@volcengine/tos-sdk";
+import {TosClient, TosClientError, TosServerError} from "@volcengine/tos-sdk";
 import * as crypto from "crypto";
 
-import { DownloadOptions, UploadOptions } from "../options";
+import {DownloadOptions, UploadOptions} from "../options";
 import * as utils from "./cacheUtils";
-import { CompressionMethod } from "./constants";
-import { ArtifactCacheEntry, InternalCacheOptions } from "./contracts.d";
+import {CompressionMethod} from "./constants";
+import {ArtifactCacheEntry, InternalCacheOptions} from "./contracts.d";
 
 const versionSalt = "1.0";
 
@@ -18,8 +18,8 @@ const repo = process.env["GITHUB_REPOSITORY"];
 function createObjectStorageClient(): TosClient {
     const endpoint = process.env["ENDPOINT"];
     const opts = endpoint
-        ? { endpoint: endpoint, secure: false }
-        : { secure: true };
+        ? {endpoint: endpoint, secure: false}
+        : {secure: true};
 
     return new TosClient({
         accessKeyId: process.env["ACCESS_KEY"] as string,
@@ -92,7 +92,7 @@ async function getRestoreKeysCacheEntry(
     for (const key of restoreKeys) {
         const prefix = `caches/${repo}/${key}`;
         try {
-            const { data } = await client.listObjectsType2({
+            const {data} = await client.listObjectsType2({
                 bucket: bucket,
                 prefix: prefix,
                 maxKeys: 100
@@ -164,6 +164,7 @@ export async function getCacheEntry(
 export async function downloadCache(
     objectKey: string,
     archivePath: string,
+    // @ts-ignore
     options?: DownloadOptions
 ): Promise<void> {
     const client = createObjectStorageClient();
@@ -174,7 +175,7 @@ export async function downloadCache(
     });
 }
 
-function handleError(error) {
+function handleError(error: any ) {
     if (error instanceof TosClientError) {
         console.log("Client Err Msg:", error.message);
         console.log("Client Err Stack:", error.stack);
@@ -193,6 +194,7 @@ async function uploadFile(
     client: TosClient,
     cacheId: string,
     archivePath: string,
+    // @ts-ignore
     options?: UploadOptions
 ): Promise<void> {
     try {
