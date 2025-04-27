@@ -1,8 +1,8 @@
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
-import * as buildjetCache from "@actions/buildjet-cache";
 import * as ghCache from "@actions/cache";
 import fs from "fs";
+import * as cache from "./cache/cache"
 
 export function reportError(e: any) {
   const { commandFailed } = e;
@@ -50,16 +50,10 @@ export interface CacheProvider {
 }
 
 export function getCacheProvider(): CacheProvider {
-  const cacheProvider = core.getInput("cache-provider");
-  const cache = cacheProvider === "github" ? ghCache : cacheProvider === "buildjet" ? buildjetCache : undefined;
-
-  if (!cache) {
-    throw new Error(`The \`cache-provider\` \`{cacheProvider}\` is not valid.`);
-  }
-
   return {
-    name: cacheProvider,
-    cache: cache,
+    name: "lynx-cache",
+    // @ts-ignore
+    cache,
   };
 }
 
