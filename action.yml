@@ -1,4 +1,4 @@
-name: "Rust Cache"
+name: "Rust Cache (Lynx)"
 description: "A GitHub Action that implements smart caching for rust/cargo projects with sensible defaults."
 author: "Arpad Borsos <swatinem@swatinem.de>"
 inputs:
